@@ -1,0 +1,6 @@
+Find
+SET @CAN_READ := 1 << 0;
+on duplicate key update
+FLUSH TABLES WITH READ LOCK;
+
+alter column vs modify column

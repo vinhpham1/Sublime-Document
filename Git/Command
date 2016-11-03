@@ -1,0 +1,65 @@
+THE BASICS
+-----
+git init
+git status
+git add <file>
+git commit
+git log
+git config --global user.name <"name">
+git config --global user.email <email>
+
+UNDO CHANGES
+-----
+git checkout <commit -id> view previous commit
+git tag -a <tag-name> -m "description"
+git revert <commiy -id> undo the special commit 
+git reset --hard: reset tracked files to match the most recent commit
+git clean --f: remove untrackfile
+
+BRANCH 1
+-----
+git branch
+git branch <new-branch>
+git checkout <branch-name>
+git merge <branch-name>
+git branch -d <branch-name>
+git rm <file>
+
+BRANCH 2
+-----
+git commit -a -m <"description">
+git branch -D <branch-name>: remove unmerged branch
+
+REBASING
+-----
+git rebase <new-base>
+git rebase -i <new-base>
+git commit --amend
+git rebase --continue
+git rebase --abort
+git merge --no-ff <branch-name>:“Force a merge commit even if Git could do a fast-forward merge.”
+
+REWRITING HISTORY
+-----
+git reflog
+git reset --mixed head~<n>
+git reset --hard head~<n>
+git log <since>..<until>
+git log --stat
+
+REMOTES
+-----
+git clone <remote-path>
+git remote
+git remote add <remote-name> <remote-path>
+git fetch <remote-name>
+git merge <remote-name>/<branch/name>
+git branch -r
+git push <remote-name> <branch-name>
+
+CENTRALIZED WORKFLOWS
+git init --bare <reponsitory-name>
+git remote rm <remote-name>
+
+DISTRIBUTED WORKFLOWS
+PATCH WORKFLOWS

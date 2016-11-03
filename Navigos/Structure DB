@@ -1,0 +1,5 @@
+pro- live : vdb01 master (.25), vdb02 ..vdb04 slave, vutil01 slave for track, vutil02 for job alert, vrsdb02 slave for resume search - master, vrsdb03 slave
+
+stage : vstagingdb01 master (30), vstagingdb02 slave(31), stagingdb03 (57) search 365 vs all
+
+dev : vdev01 master(83),  vdev02 slave(84),  vdevdb03 slave for  resume search: search 365 vs all

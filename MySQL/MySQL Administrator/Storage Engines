@@ -1,0 +1,45 @@
+The most popular: MyISAM and InnoDB
+A storage engine is a subsystem that manages tables
+A storage engine is applied at the table level, it is sometimes called table type
+
+InnoDB, the most frequently used transactional storage engine, is actually produced by a different company. This means that people can develop storage engines that meet their own needs, without having to wait for a feature to be released.
+
+#Storage engine comparison
+
+■ Transaction support — Support of transactions requires more overhead in terms of memory, storage space, and CPU usage. Every application does not require transactions and using a non-transactional storage engine can be faster in some cases.
+
+■ Table-level features — MySQL provides a handler for tables to have a CHECKSUM attribute, which can be seen in the TABLES system view in the INFORMATION_SCHEMA database. Whether or not the table has a value for CHECKSUM depends on the storage engine — only MyISAM currently handles the CHECKSUM attribute.
+
+■ Locking — MySQL Server supports the ability to lock an entire table. However, storage engines can implement their own locking methods, to be able to lock at more granular levels, such as locking a set of rows. Further locking granularity implemented by the designers of the storage engine helps determine the amount of overhead, the overall speed, the possibility for lock contention, and the ability to support higher concurrency workloads.
+
+■ Index implementation — Different applications can benefit from different index imple- mentation strategies. Several common methods of implementing indexing exist and the designers of each storage engine choose the one they think will perform best in their tar- geted situation.
+
+■ Foreign keys — Using foreign keys to enforce relational integrity among tables is quite common. However, not every application needs foreign keys and many storage engines do not support them.
+
+■ Buffering — Data, index, and log buffers are handled by storage engines. Some choose not to implement buffering in some areas at all, and others can allow multiple buffers. For example, MyISAM does not have a buffer for data, but supports multiple buffers for indexes.
+
+■ File storage — Some storage engines store their data and indexes in self-contained files, meaning that a table can be copied by copying the files. Other storage engines use centralized metadata, and thus a table cannot be copied simply by copying the data and index files.
+
+■ Backup — Some storage engines have tools to allow consistent, non-blocking backups to be taken, whereas others will cause application disruption if a backup is run while the table is in use by the application.
+
+### Using Different Storage Engines
+The default storage engine for mysqld is MyISAM. To change this, set the default_storage_engine option in the configuration file. For example:
+default_storage_engine=InnoDB
+
+- MyISAM storage engine
+	■ Non-transactional
+	■ No foreign key support
+	■ FULLTEXT indexes for text matching
+	■ No data cache
+	■ Index caches — can be specified by name
+	■ Implements both HASH and BTREE indexes (BTREE by default; see Chapter 6 for more information about indexes)
+	■ Table-level locking
+	■ Very fast read activity, suitable for data warehouses
+	■ Compressed data (with myisampack)
+	■ Online backup with mysqlhotcopy (see Chapter 13)
+	■ Maximum of 64 indexes per table
+
+MyISAM utilities
+	■ myisamchk — Used to analyze, optimize, and repair MyISAM tables.
+	■ myisampack — Used to create compressed, read-only MyISAM tables.
+	■ myisam_ftdump — Used to display information about fulltext fields in MyISAM tables.

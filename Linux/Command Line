@@ -1,0 +1,32 @@
+##Learning the sell
+
+df: disk drive
+date
+cal: calendar
+free: free memory
+
+-Navigation:
+pwd
+cd
+
+ls
+file
+less
+
+ls -l: -l long format
+command -optional arguments
+ls -l|lt --reverse
+ln: create link
+cp, rm
+mkdir
+
+alias foo='cd /usr; ls'
+
+sudo reboot
+
+
+iptables -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT
+
+rpm -ql <programe name> to find program install
+
+

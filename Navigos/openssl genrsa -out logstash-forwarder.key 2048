@@ -1,0 +1,4 @@
+openssl genrsa -out logstash-forwarder.key 2048 
+openssl req -new -key logstash-forwarder.key -out ca.csr
+
+scp /etc/pki/tls/certs/logstash-forwarder.crt vinhphamtan@192.168.56.1:/tmp

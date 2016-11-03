@@ -1,0 +1,3 @@
+I'd say a JOIN is slower, because your query execution stops as soon as an EXISTS call finds something, while a JOIN will continue until the very end.
+
+EDIT: But it depends on the query. This is something that should be judged on a case-by-case basis.

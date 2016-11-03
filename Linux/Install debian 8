@@ -1,0 +1,11 @@
+http://linuxgeekar.blogspot.com/2015/05/things-to-do-after-installing-debian.html
+
+network:
+nano /etc/NetworkManager/NetworkManager.conf
+service network-manage restart
+
+ssh:
+nano /etc/ssh/sshd_config
+PermitRootLogin yes
+service ssh restart
+

@@ -1,0 +1,10 @@
+su ngosadm
+cd /data/www/webservices_staging
+
+
+/build/php-5.5.9/bin/php app/console --env=prod naviworks:oauth-server:client:create --redirect-uri="http://tma.vietnamworks.com/" --description="CLP campaign" --grant-type="password" --grant-type="refresh-token" CLP_TMA
+
+
+
+## add facebook and google
+/build/php-5.5.9/bin/php app/console --env=prod naviworks:oauth-server:client:create --redirect-uri="http://japan.vietnamworks.com/" --description="Microsite for Japanese speakers" --grant-type="https://api.vietnamworks.com/grants/facebook_access_token" --grant-type="https://api.vietnamworks.com/grants/google_access_token" --grant-type="password" --grant-type="refresh-token" JapanWorks

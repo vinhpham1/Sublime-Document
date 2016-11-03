@@ -1,0 +1,4 @@
+Creating an index on two columns is not the same as creating two separate single-column indexes
+
+Type of indexes
+B-Tree indexes

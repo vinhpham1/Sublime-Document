@@ -1,0 +1,19 @@
+load jenkins: sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+unload jenkins: sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+
+homebrew
+sudo launchctl unload /Library/LaunchDaemons/homebrew.mxcl.jenkins.plist
+sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.jenkins.plist
+http://[jenkins-server]/[command] where [command] can be
+
+exit shutdown jenkins
+
+restart restart jenkins
+
+reload to reload the configuration
+
+
+remove JenKins
+jenkins stop
+uninstall jenkins command
+sudo rm -rf /var/root/.jenkins ~/.jenkins

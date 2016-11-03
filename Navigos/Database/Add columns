@@ -1,0 +1,1 @@
+pt-online-schema-change -hhost -uuser -ppass --alter='ADD COLUMN updatedTS timestamp' D=vnw_core,t=tblresume --execute --socket=/data/mysql/mysql.sock --set-vars innodb_lock_wait_timeout=50 --nocheck-replication-filters > /data/navigos-log/pt-osc-tblresume-20161102.log 2>&1 &

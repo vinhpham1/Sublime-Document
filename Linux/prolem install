@@ -1,0 +1,11 @@
+Unable to lock the administration directory (/var/lib/dpkg/), is another process using it?
+	rm /var/lib/dpkg/lock;
+	dpkg --configure -a
+
+media change: please insert the disc labeled
+'Ubuntu 12.04.3 LTS _Precise Pangolin_ - Release amd64 (20130820.1)
+in the drive '/media/cdrom/' and press enter
+	sudo sed -i '/drom/d' /etc/apt/sources.list
+	grep -v '#' /etc/apt/sources.list
+	
+E: Unable to locate package git

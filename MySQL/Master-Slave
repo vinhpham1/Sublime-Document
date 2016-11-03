@@ -1,0 +1,22 @@
+192.168.56.101
+
+bind-address            = 192.168.56.101
+server-id               = 1
+log_bin                 = /var/log/mysql/mysql-bin.log
+binlog_do_db            = Sample
+
+
+---Tutorial
+Password: PhamTanVinh08121994!@#$
+
+GRANT SHUTDOWN ON *.* TO 'multi_admin'@'127.0.0.1' IDENTIFIED BY 'PhamTanVinh08121994!@#$';
+
+FLUSH PRIVILEGES;
+
+/usr/local/Cellar/mysql/5.7.14/support-files/my-defaul.cnf
+
+[mysqld_multi]
+mysqld     = /usr/bin/mysqld_safe
+mysqladmin = /usr/bin/mysqladmin
+user       = multi_admin
+password   = PhamTanVinh08121994!@#$

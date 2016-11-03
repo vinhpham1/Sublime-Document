@@ -1,0 +1,68 @@
+Choosing Optimal Data Types
+	- Smaller is usually better.
+	- Simple is good.
+	- Avoid NULL if possible.
+
+Whole numbers
+	- TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT
+		8, 		16, 		24,		 32, 	64
+	- Signed and unsigned types use the same amount of storage space and have the same performance, so use whatever’s best for your data range.
+	- MySQL lets you specify a “width” for integer types, such as INT(11).
+
+	Real Numbers
+	- The FLOAT (four bytes) and DOUBLE types support approximate calculations with standard floating- point math.
+	- The DECIMAL (eight bytes) type is for storing exact fractional numbers
+	- Floating-point types typically use less space than DECIMAL to store the same range of values.
+
+String Types
+	- VARCHAR and CHAR types
+		+ VARCHAR uses 1 or 2 extra bytes to record the value’s length: 1 byte if the column’s maximum length is 255 bytes or less, and 2 bytes if it’s more
+		+ VARCHAR helps performance because it saves space
+		+ CHAR is fixed-length
+		+ CHAR is useful if you want to store very short strings, or if all the values are nearly the same length
+		+ CHAR is a good choice for MD5 values for user pass- words, which are always the same length
+		+ CHAR is also more efficient than VARCHAR;
+
+	- BLOB and TEXT types
+	the character types are TINYTEXT, SMALL TEXT, TEXT, MEDIUMTEXT, and LONGTEXT, and the binary types are TINYBLOB, SMALLBLOB, BLOB, MEDIUMBLOB, and LONGBLOB
+
+	- Using ENUM instead of a string type:
+	An ENUM column can store a predefined set of distinct string values
+		VARCHAR joined to VARCHAR 2.6
+		VARCHAR joined toENUM 1.7
+		ENUM joined to VARCHAR 1.8
+		ENUM joined to ENUM 3.5
+
+Date and Time Types
+	- DATETIME: from the year 1001 to the year 9999, with a precision of one second
+	- TIMESTAMP (4 bytes):  from the year 1970 to partway through the year 2038 
+	- The value a TIMESTAMP displays also depends on the time zone. Thus, a TIMESTAMP that stores the value 0 actually displays it as 1969-12-31 19:00:00 in Eastern Standard Time (EST), which has a five-hour offset from GMT
+
+	*** Important: By default, MySQL will set the first TIMESTAMP column to the current time when you insert a row without specifying a value for the column. MySQL also updates the first TIMESTAMP column’s value by default when you update the row, unless you assign a value explicitly in the UPDATE statement
+
+Bit-Packed Data Types
+	- You can use a BIT column to store one or many true/false values in a single column. BIT(1) defines a field that contains a bit, BIT(2) stores 2 bits, and so on; the maximum length of a BIT column is 64 bits.
+
+	- If you need to store many true/false values, consider combining many columns into one with MySQL’s native SET data type, which MySQL represents internally as a packed set of bits. It uses storage efficiently, and MySQL has functions such as FIND_IN_SET() and FIELD() that make it easy to use in queries. The major drawback is the cost of changing the column’s definition: this requires an ALTER TABLE, which is very expensive on large tables (but see the workaround later in this chapter). In general, you also can’t use indexes for lookups on SET columns.
+
+Choosing Identifiers
+- The types should match exactly, including properties such as UNSIGNED. Mixing different data types can cause performance problems, and even if it doesn’t, implicit type con-versions during comparisons can create hard-to-find errors.
+
+- Integer types
+Integers are usually the best choice for identifiers, because they’re fast and they work with AUTO_INCREMENT.
+
+- ENUM and SET
+The ENUM and SET types are generally a poor choice for identifiers, though they can be okay for static “definition tables” that contain status or “type” values. ENUM and SET columns are appropriate for holding information such as an order’s status, a product’s type, or a person’s gender
+
+- String types
+Avoid string types for identifiers if possible, because they take up a lot of space and are generally slower than integer types
+
+Schema Design Gotchas in MySQL
+
+- Too many columns
+- Too many joins
+- The all-powerful ENUM
+- The ENUM in disguise
+- NULL not invented here
+
+

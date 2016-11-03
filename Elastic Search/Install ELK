@@ -1,0 +1,225 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-centos-7
+
+install java
+
+install elasticsearch
+	sudo rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
+
+	echo '[elasticsearch-2.x]
+	name=Elasticsearch repository for 2.x packages
+	baseurl=http://packages.elastic.co/elasticsearch/2.x/centos
+	gpgcheck=1
+	gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+	enabled=1
+	' | sudo tee /etc/yum.repos.d/elasticsearch.repo
+
+	sudo yum -y install elasticsearch
+
+	sudo vi /etc/elasticsearch/elasticsearch.yml
+
+	network.host: localhost
+
+	sudo systemctl start elasticsearch
+
+install kibana
+	sudo vi /etc/yum.repos.d/kibana.repo
+
+	[kibana-4.4]
+	name=Kibana repository for 4.4.x packages
+	baseurl=http://packages.elastic.co/kibana/4.4/centos
+	gpgcheck=1
+	gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
+	enabled=1
+
+	sudo yum -y install kibana
+
+	sudo vi /opt/kibana/config/kibana.yml
+
+	server.host: "localhost"
+
+	sudo systemctl start kibana
+	sudo chkconfig kibana on
+
+install Nginx
+	
+	sudo yum -y install epel-release
+
+	sudo yum -y install nginx httpd-tools
+
+	sudo htpasswd -c /etc/nginx/htpasswd.users kibanaadmin
+
+	sudo vi /etc/nginx/nginx.conf
+
+	server {
+		include /etc/nginx/conf.d/*.conf;
+	}
+
+	sudo vi /etc/nginx/conf.d/kibana.conf
+
+	server {
+	    listen 80;
+
+	    server_name example.com;
+
+	    auth_basic "Restricted Access";
+	    auth_basic_user_file /etc/nginx/htpasswd.users;
+
+	    location / {
+	        proxy_pass http://localhost:5601;
+	        proxy_http_version 1.1;
+	        proxy_set_header Upgrade $http_upgrade;
+	        proxy_set_header Connection 'upgrade';
+	        proxy_set_header Host $host;
+	        proxy_cache_bypass $http_upgrade;        
+	    }
+	}
+
+	sudo systemctl start nginx
+	sudo systemctl enable nginx
+
+install logstash 
+	sudo vi /etc/yum.repos.d/logstash.repo
+
+	[logstash-2.2]
+	name=logstash repository for 2.2 packages
+	baseurl=http://packages.elasticsearch.org/logstash/2.2/centos
+	gpgcheck=1
+	gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+	enabled=1
+
+	sudo yum -y install logstash
+
+Generate SSL Certificates
+	
+	yum install mod_ssl openssl
+
+	# Generate private key 
+	openssl genrsa -out ca.key 2048 
+
+	# Generate CSR 
+	openssl req -new -key ca.key -out ca.csr
+
+	# Generate Self Signed Key
+	openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+
+	# Copy the files to the correct locations
+	cp ca.crt /etc/pki/tls/certs
+	cp ca.key /etc/pki/tls/private/ca.key
+	cp ca.csr /etc/pki/tls/private/ca.csr
+
+	restorecon -RvF /etc/pki
+
+	vi +/SSLCertificateFile /etc/httpd/conf.d/ssl.conf
+
+	SSLCertificateFile /etc/pki/tls/certs/ca.crt
+
+	SSLCertificateKeyFile /etc/pki/tls/private/ca.key
+
+	sudo vi /etc/pki/tls/openssl.cnf
+
+	#find [ v3_ca]
+
+	subjectAltName = IP: ELK_server_private_ip
+
+	cd /etc/pki/tls
+
+	sudo openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
+
+
+config logstash
+	sudo vi /etc/logstash/conf.d/02-beats-input.conf
+
+	input {
+	  beats {
+	    port => 5044
+	    ssl => true
+	    ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
+	    ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
+	  }
+	}
+
+	sudo vi /etc/logstash/conf.d/10-syslog-filter.conf
+
+	filter {
+	  if [type] == "syslog" {
+	    grok {
+	      match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
+	      add_field => [ "received_at", "%{@timestamp}" ]
+	      add_field => [ "received_from", "%{host}" ]
+	    }
+	    syslog_pri { }
+	    date {
+	      match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+	    }
+	  }
+	}
+
+	sudo vi /etc/logstash/conf.d/30-elasticsearch-output.conf
+
+	output {
+	  elasticsearch {
+	    hosts => ["localhost:9200"]
+	    sniffing => true
+	    manage_template => false
+	    index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+	    document_type => "%{[@metadata][type]}"
+	  }
+	}
+
+	sudo service logstash configtest
+
+	sudo systemctl restart logstash
+	sudo chkconfig logstash on
+
+Set up file beat
+
+	scp /etc/pki/tls/certs/logstash-forwarder.crt user@client_server_private_address:/tmp
+
+	sudo mkdir -p /etc/pki/tls/certs
+	sudo cp /tmp/logstash-forwarder.crt /etc/pki/tls/certs/
+
+Install Filebeat Package
+
+	sudo rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
+
+	sudo vi /etc/yum.repos.d/elastic-beats.repo
+
+	[beats]
+	name=Elastic Beats Repository
+	baseurl=https://packages.elastic.co/beats/yum/el/$basearch
+	enabled=1
+	gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch
+	gpgcheck=1
+
+	sudo yum -y install filebeat
+
+Configure Filebeat
+
+	sudo vi /etc/filebeat/filebeat.yml
+
+	...
+	      paths:
+	        - /var/log/secure
+	        - /var/log/messages
+	#        - /var/log/*.log
+	...
+
+	...
+	      document_type: syslog
+	...
+
+	### Logstash as output
+	  logstash:
+	    # The Logstash hosts
+	    hosts: ["ELK_server_private_IP:5044"]
+
+    bulk_max_size: 1024
+
+	...
+    tls:
+      # List of root certificates for HTTPS server verifications
+      certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+
+	sudo systemctl start filebeat
+	sudo systemctl enable filebeat
+

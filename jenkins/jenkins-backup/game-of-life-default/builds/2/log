@@ -1,0 +1,53 @@
+Started by user [8mha:AAAAmR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAz2EgZe/dLi1CJ9r9S87My8YgBaj5+swgAAAA==[0mJenkins
+Building in workspace /Users/Shared/Jenkins/Home/workspace/game-of-life-default
+Build was aborted
+Aborted by [8mha:AAAAmR+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAz2EgZe/dLi1CL9rNS87My8YgDGtiJjwgAAAA==[0mJenkins
+Archiving artifacts
+ERROR: Step ‘Archive the artifacts’ aborted due to exception: 
+[8mha:AAAAWB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P08vOT+vOD8nVc8DzHWtSE4tKMnMz/PLL0ldFVf2c+b/lb5MDAwVRQxSaBqcITRIIQMEMIIUFgAAckCEiWAAAAA=[0mjava.lang.InterruptedException
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(AbstractQueuedSynchronizer.java:998)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(AbstractQueuedSynchronizer.java:1304)
+	at java.util.concurrent.Semaphore.acquire(Semaphore.java:312)
+	at hudson.tools.InstallerTranslator.getToolHome(InstallerTranslator.java:66)
+	at hudson.tools.ToolLocationNodeProperty.getToolHome(ToolLocationNodeProperty.java:109)
+	at hudson.tools.ToolInstallation.translateFor(ToolInstallation.java:206)
+	at hudson.model.JDK.forNode(JDK.java:144)
+	at hudson.model.AbstractProject.getEnvironment(AbstractProject.java:358)
+	at hudson.model.Run.getEnvironment(Run.java:2236)
+	at hudson.model.AbstractBuild.getEnvironment(AbstractBuild.java:922)
+	at hudson.tasks.ArtifactArchiver.perform(ArtifactArchiver.java:235)
+	at hudson.tasks.BuildStepCompatibilityLayer.perform(BuildStepCompatibilityLayer.java:78)
+	at hudson.tasks.BuildStepMonitor$1.perform(BuildStepMonitor.java:20)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.perform(AbstractBuild.java:779)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.performAllBuildSteps(AbstractBuild.java:720)
+	at hudson.model.Build$BuildExecution.post2(Build.java:185)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.post(AbstractBuild.java:665)
+	at hudson.model.Run.execute(Run.java:1745)
+	at hudson.model.FreeStyleBuild.run(FreeStyleBuild.java:43)
+	at hudson.model.ResourceController.execute(ResourceController.java:98)
+	at hudson.model.Executor.run(Executor.java:404)
+Recording test results
+ERROR: Step ‘Publish JUnit test result report’ aborted due to exception: 
+[8mha:AAAAWB+LCAAAAAAAAP9b85aBtbiIQSmjNKU4P08vOT+vOD8nVc8DzHWtSE4tKMnMz/PLL0ldFVf2c+b/lb5MDAwVRQxSaBqcITRIIQMEMIIUFgAAckCEiWAAAAA=[0mjava.lang.InterruptedException
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(AbstractQueuedSynchronizer.java:998)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(AbstractQueuedSynchronizer.java:1304)
+	at java.util.concurrent.Semaphore.acquire(Semaphore.java:312)
+	at hudson.tools.InstallerTranslator.getToolHome(InstallerTranslator.java:66)
+	at hudson.tools.ToolLocationNodeProperty.getToolHome(ToolLocationNodeProperty.java:109)
+	at hudson.tools.ToolInstallation.translateFor(ToolInstallation.java:206)
+	at hudson.model.JDK.forNode(JDK.java:144)
+	at hudson.model.AbstractProject.getEnvironment(AbstractProject.java:358)
+	at hudson.model.Run.getEnvironment(Run.java:2236)
+	at hudson.model.AbstractBuild.getEnvironment(AbstractBuild.java:922)
+	at hudson.tasks.junit.JUnitResultArchiver.perform(JUnitResultArchiver.java:147)
+	at hudson.tasks.BuildStepCompatibilityLayer.perform(BuildStepCompatibilityLayer.java:78)
+	at hudson.tasks.BuildStepMonitor$1.perform(BuildStepMonitor.java:20)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.perform(AbstractBuild.java:779)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.performAllBuildSteps(AbstractBuild.java:720)
+	at hudson.model.Build$BuildExecution.post2(Build.java:185)
+	at hudson.model.AbstractBuild$AbstractBuildExecution.post(AbstractBuild.java:665)
+	at hudson.model.Run.execute(Run.java:1745)
+	at hudson.model.FreeStyleBuild.run(FreeStyleBuild.java:43)
+	at hudson.model.ResourceController.execute(ResourceController.java:98)
+	at hudson.model.Executor.run(Executor.java:404)
+Finished: ABORTED
