@@ -16,3 +16,9 @@ SELECT CONCAT(MD5('ADR_Avery2016_Prod'), MD5('ADR_Avery_Prod')), 'ADR_Avery2016_
 #17877
 INSERT INTO `tblsys_consumerKey` (`apiKey`, `clientName`, `clientLogo`, `clientLink`, `isActive`) 
 SELECT CONCAT(MD5('ADR_Ateam-event_Staging2016'), MD5('ADR_Ateam-event_Staging2016')), 'ADR_Ateam-event_Staging2016', NULL, 'http://ateam-event.vietnamworks.com/', 1;
+
+#17891
+INSERT INTO `tblsys_consumerKey` (`apiKey`, `clientName`, `clientLogo`, `clientLink`, `isActive`) 
+SELECT CONCAT(MD5('ADR_Ateam-event_Production2016'), MD5('ADR_Ateam-event_Production2016')), 'ADR_Ateam-event_Production2016', NULL, 'http://ateam-event.vietnamworks.com/', 1;
+
+select * from tblsys_consumerKey where clientName like '%ADR_Ateam-event_Production2016%';
